@@ -1,6 +1,16 @@
 -- Keep only digits in a string
 select REGEXP_REPLACE(cart_id_input, r'[^\d]', '') as cart_id_input_clean from UNNEST(["6080083452PLMASTER"])  as cart_id_input
 
+DECLARE cart_id_list_raw            ARRAY<STRING> DEFAULT ["6080083452PLMASTER"];
+DECLARE cart_id_list                ARRAY<STRING> DEFAULT ARRAY(
+    select REGEXP_REPLACE(cart_id_input, r'[^\d]', '') as cart_id_input_clean from UNNEST(cart_id_list_raw)  as cart_id_input
+);
+select cart_id_list_raw;
+select cart_id_list;
+
+
+
+  
 -- Create a scheduled query
 --create or replace table DatasetName.TableName1 as
 insert DatasetName.TableName
