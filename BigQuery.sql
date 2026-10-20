@@ -1,3 +1,6 @@
+-- Keep only digits in a string
+select REGEXP_REPLACE(cart_id_input, r'[^\d]', '') as cart_id_input_clean from UNNEST(["6080083452PLMASTER"])  as cart_id_input
+
 -- Create a scheduled query
 --create or replace table DatasetName.TableName1 as
 insert DatasetName.TableName
