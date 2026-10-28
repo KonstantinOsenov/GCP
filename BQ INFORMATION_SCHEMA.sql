@@ -6,7 +6,7 @@ WHERE table_name = '<TABLE_NAME>'
 
 -- get all table names from bigquery dataset
 
-SELECT *
+SELECT distinct CONCAT(table_catalog, table_schema, table_name) as table_name
 FROM <PROJECT_NAME>.<DATASET_NAME>.INFORMATION_SCHEMA.TABLES
 
 -- job info bigquery
