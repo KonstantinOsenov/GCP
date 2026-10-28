@@ -4,6 +4,11 @@ SELECT column_name
 FROM <PROJECT_NAME>.<DATASET_NAME>.INFORMATION_SCHEMA.COLUMNS
 WHERE table_name = '<TABLE_NAME>'
 
+-- get all table names from bigquery dataset
+
+SELECT *
+FROM <PROJECT_NAME>.<DATASET_NAME>.INFORMATION_SCHEMA.TABLES
+
 -- job info bigquery
 SELECT *
   -- job_id, 
