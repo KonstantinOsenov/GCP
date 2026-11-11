@@ -39,3 +39,10 @@ WHERE 1=1
   and date(timestamp) < CURRENT_DATE()
 group by
   attr1, attr2
+
+---- datetime/timestamp to unix timestamp
+SELECT
+  UNIX_SECONDS(ts) AS unix_s,
+  UNIX_MILLIS(ts)  AS unix_ms,
+  UNIX_MICROS(ts)  AS unix_us
+FROM my_table;
