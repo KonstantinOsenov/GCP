@@ -1,0 +1,29 @@
+GCP alerts with emails
+
+1. Create a scheduled query
+	- write down config_id (last part of the Resource name)
+		f.ex. full resource name - "projects/123213/locations/europe-west1/transferConfigs/213123213-123123-123132-123213-123123".
+		config_id = "213123213-123123-123132-123213-123123"
+	- cron schedule - every hour from 5:05 to 6:05 -- 2 runs: 1st - the real one with alerts, 2nd - to clean the state (will add details later)
+	There are 2 ways to "hack the system" so far:
+		a) when you have timestamp and can figure out hour.
+			where 1 = case when EXTRACT(HOUR from CURRENT_TIMESTAMP) = 6 then 0 else 1 end ----- at 6 AM UTC time the alert is going to triger (it is scheduled at this time) 
+				-> return 0 rows (the incident is closed -> we can run "real query").
+		b) when you know that the source table (with filters) will be empty at some point in time. F.ex. you add the data at 3AM UTC -> at 2AM UTC the table is empty.
+			you can use just where 1=1, but add schedule update - every hour from 2:15 to 3:15
+	
+2. Create a policy
+	- monitoring - alerting - create a policy
+		- Select a metric - BigQuery DTS Config - transfer_config - Last executed job row count
+		- filter - config_id = (config_id of the scheduled query) 
+		- rolling window 5 mins, function - min ---- don't know whether it matters or not
+		- trigger - threshold - any time series violation .- above threshold - 0
+		- incident auto closure 30 min
+		- documentation - the only place where you can add details. Usually add a link to BQ query where other people can query details
+	
+	
+3. Comments
+- created notification channels - emails in advance
+- alert is triggered every time the schedule query is finished
+- when alert is triggered an incident is created - alerting-incidents - an incident is closed only when the metric is back to "normal" (0 rows in this case)
+- alert sends email only if the incident is closed -> hence there is a hack with 2 runs of the scheduled query
