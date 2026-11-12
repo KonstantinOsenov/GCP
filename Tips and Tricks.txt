@@ -1,0 +1,3 @@
+# manual upload csv file as a bigquery table
+if you have all values as strings, bigquery does not recognize 1st row as headers
+hack - add a column with integers -> automaticly detects headers
